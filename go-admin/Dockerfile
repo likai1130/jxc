@@ -10,4 +10,4 @@ COPY ./temp /app/temp
 
 EXPOSE 8000
 RUN  chmod +x /app/go-admin
-CMD ["/app/go-admin","server","-c", "/config/settings.yml"]
+CMD ["/app/go-admin","server","-c", "/app/config/settings.yml"]
