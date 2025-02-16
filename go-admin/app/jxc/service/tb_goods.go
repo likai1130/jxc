@@ -39,7 +39,7 @@ func (e *Goods) GetPage(c *dto.GoodsGetPageReq, p *actions.DataPermission, list 
 		for i, goods := range *list {
 			var totalSales int64
 			err = e.Orm.Model(models.SaleListGoods{}).
-				Select("SUM(num)").
+				Select("COALESCE(SUM(num), 0)").
 				Where("goods_id = ?", goods.Id).
 				Scan(&totalSales).Error
 			if err != nil {
