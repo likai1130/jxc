@@ -3,11 +3,11 @@ FROM alpine
 ENV TZ Asia/Shanghai
 WORKDIR /app
 
-COPY ./go-admin /app/go-admin
-COPY ./config/settings.yml /app/config/settings.yml
-COPY ./static /app/static
-COPY ./temp /app/temp
+COPY ./go-admin ./go-admin
+COPY ./config/settings.yml ./config/settings.yml
+COPY ./static ./static
+COPY ./temp ./temp
 
 EXPOSE 8000
-RUN  chmod +x /app/go-admin
-CMD ["/app/go-admin","server","-c", "/app/config/settings.yml"]
+RUN  chmod 777 go-admin
+CMD ["sh","go-admin","server","-c", "config/settings.yml"]
