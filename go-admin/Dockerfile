@@ -1,9 +1,12 @@
 FROM alpine
 
-# 安装 tzdata
-RUN apk add --no-cache tzdata
-
+# 安装 tzdata 和字体
+RUN apk add --no-cache tzdata fontconfig ttf-dejavu
 ENV TZ Asia/Shanghai
+ENV LANG zh_CN.UTF-8
+ENV LANGUAGE zh_CN:zh
+ENV LC_ALL zh_CN.UTF-8
+
 WORKDIR /app
 
 # 复制文件
@@ -13,10 +16,10 @@ COPY ./static ./static
 COPY ./temp ./temp
 
 # 设置权限
-RUN chmod 777 ./go-admin
+RUN chmod +x ./go-admin  # 确保可执行权限
 
 # 暴露端口
 EXPOSE 8000
 
-# 直接执行可执行文件
-CMD ["./go-admin", "server", "-c", "config/settings.yml"]
+# 使用 sh 执行
+CMD ["sh", "./go-admin", "server", "-c", "config/settings.yml"]
