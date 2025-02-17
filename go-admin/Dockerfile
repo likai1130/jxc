@@ -22,4 +22,4 @@ RUN chmod +x ./go-admin  # 确保可执行权限
 EXPOSE 8000
 
 # 使用 sh 执行
-CMD ["sh", "./go-admin", "server", "-c", "config/settings.yml"]
+CMD ["./go-admin", "server", "-c", "config/settings.yml"]
