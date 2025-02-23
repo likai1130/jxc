@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"go-admin/app/jxc/service/consts"
 
 	"github.com/go-admin-team/go-admin-core/sdk/service"
@@ -109,6 +110,9 @@ func (e *InventoryTransactions) Insert(c *dto.InventoryTransactionsInsertReq) er
 			if err != nil {
 				return err
 			}
+			if goodsData.StockQuantity < gmit.Num {
+				return errors.New(fmt.Sprintf("商品: %s 规格: %s 库存不足，请备货后再出库", gmit.GName, gmit.Specification))
+			}
 			goodsData.StockQuantity -= gmit.Num
 			err = tx.Save(goodsData).Error
 			if err != nil {
@@ -120,7 +124,6 @@ func (e *InventoryTransactions) Insert(c *dto.InventoryTransactionsInsertReq) er
 			return err
 		}
 
-		// todo 修改销售单状态
 		err = tx.Model(&models.SaleList{}).Where("id = ?", c.OrderId).Update("shipment_status", "1").Error
 		if err != nil {
 			return err
