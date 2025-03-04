@@ -64,7 +64,7 @@ func (s *InventoryTransactionsInsertReq) Generate() []models.InventoryTransactio
 			transactions := models.InventoryTransactions{
 				TransactionType: s.TransactionType,
 				GCode:           gl.GCode,
-				GName:           gl.GCode,
+				GName:           gl.GName,
 				Specification:   gl.Specification,
 				Num:             gl.Num,
 				OrderNumber:     s.OrderNumber,
