@@ -80,6 +80,7 @@ func (e *InventoryTransactions) Insert(c *dto.InventoryTransactionsInsertReq) er
 			if err != nil {
 				return err
 			}
+			// 成本均价 = （成本均价*当前库存数量 + 本次采购价*本次采购数量）/ （当前库存量 + 本次采购数量）
 			goodsData.PurchasingPrice = (goodsData.PurchasingPrice*float64(goodsData.StockQuantity) + gmit.LastPurchasingPrice*float64(gmit.Num)) / float64(goodsData.StockQuantity+gmit.Num)
 			goodsData.LastPurchasingPrice = gmit.LastPurchasingPrice
 			goodsData.StockQuantity += gmit.Num
