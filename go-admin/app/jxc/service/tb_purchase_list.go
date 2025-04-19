@@ -75,11 +75,12 @@ func (e *PurchaseList) Insert(c *dto.PurchaseListInsertReq) error {
 		}
 	}()
 
-	// 1. 生成新的销售单号
+	// 1. 生成新的采购单号
 	// 获取今天的开始和结束时间
-	startOfDay := time.Now().Truncate(24 * time.Hour).UTC()
+	now := time.Now()
+	startOfDay := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
 	formattedStartTime := startOfDay.Format("2006-01-02 15:04:05")
-	endOfDay := startOfDay.Add(24 * time.Hour).UTC()
+	endOfDay := startOfDay.Add(24 * time.Hour)
 	formattedEndTime := endOfDay.Format("2006-01-02 15:04:05")
 
 	var count int64
