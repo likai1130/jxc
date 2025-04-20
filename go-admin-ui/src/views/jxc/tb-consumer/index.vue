@@ -207,6 +207,8 @@
                     pageSize: 10,
                     customerName:undefined,
                     customerType:undefined,
+                    createdAtOrder: "desc"
+
                     
                 },
                 // 表单参数

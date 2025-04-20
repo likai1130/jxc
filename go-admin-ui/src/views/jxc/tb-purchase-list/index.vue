@@ -36,39 +36,39 @@
                 <el-table v-loading="loading" :data="purchaseListList" @selection-change="handleSelectionChange">
                     <el-table-column width="55" align="center"/><el-table-column label="采购单号" align="center" prop="purchaseNumber"
                     :show-overflow-tooltip="true"/><el-table-column label="总金额(￥)" align="center" prop="amountPayable"
-                                                 :show-overflow-tooltip="true"/><el-table-column label="已付金额(￥)" align="center" prop="amountPaid"
-                                                 :show-overflow-tooltip="true"/><el-table-column label="采购日期" align="center" prop="purchaseDate"
-                                                 :show-overflow-tooltip="true"/><el-table-column label="备注" align="center" prop="remarks"
-                                                 :show-overflow-tooltip="true"/><el-table-column label="是否付款" align="center" prop="state"
-                                                 :formatter="stateFormat" width="100">
-                                    <template slot-scope="scope">
-                                        {{ stateFormat(scope.row) }}
-                                    </template>
-                                </el-table-column><el-table-column label="是否入库" align="center" prop="storageStatus"
-                                                 :formatter="storageStatusFormat" width="100">
-                                    <template slot-scope="scope">
-                                        {{ storageStatusFormat(scope.row) }}
-                                    </template>
-                                </el-table-column>
-                                <el-table-column label="创建时间" align="center" prop="createdAt" width="180">
-                                    <template slot-scope="scope">
-                                    <span>{{ parseTime(scope.row.createdAt) }}</span>
-                                    </template>
-                                </el-table-column>
+                    :show-overflow-tooltip="true"/><el-table-column label="已付金额(￥)" align="center" prop="amountPaid"
+                    :show-overflow-tooltip="true"/><el-table-column label="采购日期" align="center" prop="purchaseDate"
+                    :show-overflow-tooltip="true"/><el-table-column label="销售单号" align="center" prop="saleNumber"
+                    :show-overflow-tooltip="true"/><el-table-column label="备注" align="center" prop="remarks"
+                    :show-overflow-tooltip="true"/>
+                    <el-table-column label="是否付款" align="center" prop="state" :formatter="stateFormat" width="100"> 
+                        <template slot-scope="scope">{{ stateFormat(scope.row) }}</template>
+                    </el-table-column>
+                    <el-table-column label="是否入库" align="center" prop="storageStatus"
+                            :formatter="storageStatusFormat" width="100">
+                            <template slot-scope="scope">
+                                {{ storageStatusFormat(scope.row) }}
+                            </template>
+                    </el-table-column>
+                 
+                    <el-table-column label="创建时间" align="center" prop="createdAt" width="180">
+                        <template slot-scope="scope">
+                            <span>{{ parseTime(scope.row.createdAt) }}</span>
+                        </template>
+                    </el-table-column>
                     <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
                         <template slot-scope="scope">
                             <el-button
-                              slot="reference"
-                              size="mini"
-                              type="text"
-                              icon="el-icon-s-goods"
-                              @click="handleOpenTable(scope.row)"
+                            slot="reference"
+                            size="mini"
+                            type="text"
+                            icon="el-icon-s-goods"
+                            @click="handleOpenTable(scope.row)"
                             >采购明细
                             </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
-
                 <pagination
                         v-show="total>0"
                         :total="total"

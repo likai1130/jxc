@@ -174,7 +174,7 @@
                     pageSize: 10,
                     supplierName:undefined,
                     contactName:undefined,
-                    
+                    createdAtOrder: "desc"
                 },
                 // 表单参数
                 form: {

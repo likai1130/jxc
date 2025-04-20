@@ -255,6 +255,7 @@
                     saleNumber:undefined,
                     state:undefined,
                     customerId:undefined,
+                    createdAtOrder: "desc"
                     
                 },
                 // 表单参数

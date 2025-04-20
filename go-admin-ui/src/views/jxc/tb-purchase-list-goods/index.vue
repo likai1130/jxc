@@ -179,6 +179,7 @@
                     saleNumber:  [ {required: true, message: '销售订单不能为空', trigger: 'blur'} ],
 
                 },
+                selectedSaleNumberValue: '' // 用于存储选中项的 value
         }
         },
         created() {
@@ -275,6 +276,12 @@
           
             /**销售商品明细列表 */
             getSaleListGoods(id) {
+                const selectedOption = this.saleNumberOptions.find(item => item.key === id);
+                if (selectedOption) {
+                    this.selectedSaleNumberValue = selectedOption.value;
+                    console.log('选中的销售单号值为:', this.selectedSaleNumberValue);
+                 }
+                
                 this.goodsQueryParams.saleListId = id
                 this.goodsLoading = true
                 listSaleListGoods(this.goodsQueryParams).then(response => {
@@ -324,6 +331,8 @@
                         ...this.form,
                         goods: this.saleListGoodsList // 将对象数组作为表单的一部分
                     };
+                    payload.selectedSaleNumberValue =  this.selectedSaleNumberValue
+
                     if (valid) {
                         if (this.form.id !== undefined) {
                             updatePurchaseList(this.form).then(response => {
