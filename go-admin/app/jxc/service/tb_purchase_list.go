@@ -95,7 +95,7 @@ func (e *PurchaseList) Insert(c *dto.PurchaseListInsertReq) error {
 	// 2. 创建订单
 	err = tx.Create(&data).Error
 	if err != nil {
-		e.Log.Errorf("PurchaseListService Insert error:%s \r\n", err)
+		e.Log.Errorf("PurchaseListService Insert error:%s", err)
 		return err
 	}
 	// 3. 保存商品明细
@@ -105,6 +105,11 @@ func (e *PurchaseList) Insert(c *dto.PurchaseListInsertReq) error {
 		if err != nil {
 			return err
 		}
+	}
+	// 4. 修改销售单的采购状态
+	if err = tx.Model(&models.SaleList{}).Where("sale_number = ?", c.SelectedSaleNumberValue).Updates(map[string]interface{}{"is_purchased": "1"}).Error; err != nil {
+		e.Log.Errorf("update SaleList is_purchased error:%s", err)
+		return err
 	}
 	return nil
 }

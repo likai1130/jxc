@@ -13,8 +13,9 @@ type SaleList struct {
 	SaleNumber     string  `json:"saleNumber" gorm:"type:varchar(100);comment:销售单号"`
 	Remarks        string  `json:"remarks" gorm:"type:varchar(255);comment:备注"`
 	State          string  `json:"state" gorm:"type:varchar(50);comment:状态"`
-	ShipmentStatus string  `gorm:"type:varchar(45);comment:'出库状态(已出库/未出库)'" json:"shipmentStatus"`
+	ShipmentStatus string  `json:"shipmentStatus" gorm:"type:varchar(45);comment:'出库状态(已出库/未出库)'" `
 	CustomerId     int64   `json:"customerId" gorm:"type:tinyint;comment:消费者ID"`
+	IsPurchased    string  `json:"isPurchased" gorm:"type:varchar(45);comment:采购状态（0未采购，1已采购）"`
 	models.ModelTime
 	models.ControlBy
 }

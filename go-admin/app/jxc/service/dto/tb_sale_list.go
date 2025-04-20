@@ -12,6 +12,7 @@ type SaleListGetPageReq struct {
 	State          string `form:"state"  search:"type:exact;column:state;table:tb_sale_list" comment:"状态"`
 	CustomerId     int64  `form:"customerId"  search:"type:exact;column:customer_id;table:tb_sale_list" comment:"消费者ID"`
 	ShipmentStatus string `form:"shipmentStatus"  search:"type:exact;column:shipment_status;table:tb_sale_list" comment:"出库状态(已出库/未出库)"`
+	IsPurchased    string `form:"isPurchased"  search:"type:exact;column:is_purchased;comment:采购状态（0未采购，1已采购）"`
 	SaleListOrder
 }
 
@@ -30,6 +31,7 @@ type SaleListOrder struct {
 	DeletedAt      string `form:"deletedAtOrder"  search:"type:order;column:deleted_at;table:tb_sale_list"`
 	CreateBy       string `form:"createByOrder"  search:"type:order;column:create_by;table:tb_sale_list"`
 	UpdateBy       string `form:"updateByOrder"  search:"type:order;column:update_by;table:tb_sale_list"`
+	IsPurchased    string `form:"isPurchased"  search:"type:order;column:is_purchased;table:tb_sale_list"`
 }
 
 func (m *SaleListGetPageReq) GetNeedSearch() interface{} {
@@ -61,6 +63,7 @@ func (s *SaleListInsertReq) Generate(model *models.SaleList) {
 	model.State = s.State
 	model.CustomerId = s.CustomerId
 	model.CreateBy = s.CreateBy // 添加这而，需要记录是被谁创建的
+	model.IsPurchased = "0"
 }
 func (s *SaleListInsertReq) GenerateGoods(saleListId int64) []models.SaleListGoods {
 	goodsDtos := s.Goods
