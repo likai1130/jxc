@@ -16,7 +16,17 @@
                                                 :value="dict.value"
                                         />
                                     </el-select>
-                            </el-form-item>
+                        </el-form-item>
+                        <el-form-item label="是否采购" prop="isPurchased"><el-select v-model="queryParams.isPurchased"
+                                               placeholder="是否采购" clearable size="small">
+                                        <el-option
+                                                v-for="dict in isPurchasedOptions"
+                                                :key="dict.value"
+                                                :label="dict.label"
+                                                :value="dict.value"
+                                        />
+                                    </el-select>
+                        </el-form-item>
                         <el-form-item label="是否出库" prop="shipmentStatus"><el-select v-model="queryParams.shipmentStatus"
                                                placeholder="是否出库" clearable size="small">
                                         <el-option
@@ -27,6 +37,7 @@
                                         />
                                     </el-select>
                             </el-form-item>
+    
                         <el-form-item label="客户" prop="customerId"><el-select v-model="queryParams.customerId"
                                            placeholder="请选择" clearable size="small" >
                                     <el-option
@@ -60,6 +71,12 @@
                                         :formatter="stateFormat" width="100">
                         <template slot-scope="scope">
                             {{ stateFormat(scope.row) }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="是否采购" align="center" prop="isPurchased"
+                                        :formatter="isPurchasedFormat" width="100">
+                        <template slot-scope="scope">
+                            {{ isPurchasedFormat(scope.row) }}
                         </template>
                     </el-table-column>
                     <el-table-column label="是否出库" align="center" prop="shipmentStatus"
@@ -155,6 +172,7 @@
                 saleListList: [],
                 stateOptions: [],
                 shipmentStatusOptions:[],
+                isPurchasedOptions:[],
                 // 关系表类型
                 customerIdOptions :[],
                 
@@ -192,6 +210,9 @@
             })
             this.getDicts('bus_sale_list_shipment_status').then(response => {
                 this.shipmentStatusOptions = response.data
+            })
+            this.getDicts('bus_sale_list_is_purchased').then(response => {
+                this.isPurchasedOptions = response.data
             })
             this.getConsumerItems()
             },
@@ -238,6 +259,11 @@
             shipmentStatusFormat(row) {
                 return this.selectDictLabel(this.shipmentStatusOptions, row.shipmentStatus)
             },
+
+            isPurchasedFormat(row) {
+                return this.selectDictLabel(this.isPurchasedOptions, row.isPurchased)
+            },
+
             customerIdFormat(row) {
                 return this.selectItemsLabel(this.customerIdOptions, row.customerId)
             },

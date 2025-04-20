@@ -160,7 +160,8 @@
                     pageIndex: 1,
                     pageSize: 10000,
                     shipmentStatus: "0",
-                    createdAtOrder: "desc"
+                    createdAtOrder: "desc",
+                    isPurchased: "0"
                 },
                 // 表单参数
                 form: {
@@ -230,7 +231,7 @@
             }
                 this.resetForm('form')
                 this.saleListGoodsList = []
-                this.supplierIdOptions = [] // 确保供应商选项清空
+               // this.supplierIdOptions = [] // 确保供应商选项清空
             },
             getImgList: function() {
               this.form[this.fileIndex] = this.$refs['fileChoose'].resultList[0].fullUrl
@@ -276,6 +277,12 @@
           
             /**销售商品明细列表 */
             getSaleListGoods(id) {
+                if (!id) {
+                    // 当 id 为空时，清空列表数据
+                    this.reset()
+                    this.goodsLoading = false
+                    return;
+                 }
                 const selectedOption = this.saleNumberOptions.find(item => item.key === id);
                 if (selectedOption) {
                     this.selectedSaleNumberValue = selectedOption.value;
@@ -296,8 +303,11 @@
                         this.calculateTotalPayable() // 计算应付金额    
                         this.calculateTotalPaid() // 计算实付金额
                         this.goodsLoading = false
-                    }
-                )
+                    })
+                .catch(error => {
+                    console.error('获取销售单商品列表失败:', error);
+                    this.goodsLoading = false;
+                });
             },
             
              // 计算临时商品数组一行总金额
