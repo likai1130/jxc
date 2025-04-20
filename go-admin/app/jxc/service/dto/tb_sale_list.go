@@ -8,7 +8,7 @@ import (
 
 type SaleListGetPageReq struct {
 	dto.Pagination `search:"-"`
-	SaleNumber     string `form:"saleNumber"  search:"type:exact;column:sale_number;table:tb_sale_list" comment:"销售单号"`
+	SaleNumber     string `form:"saleNumber"  search:"type:contains;column:sale_number;table:tb_sale_list" comment:"销售单号"`
 	State          string `form:"state"  search:"type:exact;column:state;table:tb_sale_list" comment:"状态"`
 	CustomerId     int64  `form:"customerId"  search:"type:exact;column:customer_id;table:tb_sale_list" comment:"消费者ID"`
 	ShipmentStatus string `form:"shipmentStatus"  search:"type:exact;column:shipment_status;table:tb_sale_list" comment:"出库状态(已出库/未出库)"`

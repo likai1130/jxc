@@ -15,6 +15,7 @@ type PurchaseList struct {
 	State          string  `json:"state" gorm:"type:varchar(50);comment:是否付款"`
 	StorageStatus  string  `json:"storageStatus" gorm:"type:varchar(45);comment:是否入库"`
 	SupplierId     int64   `json:"supplierId" gorm:"type:tinyint;comment:供货商"`
+	SaleNumber     string  `json:"saleNumber" gorm:"type:varchar(100);comment:销售单号"`
 	models.ModelTime
 	models.ControlBy
 }

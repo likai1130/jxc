@@ -8,7 +8,7 @@ import (
 
 type PurchaseListGetPageReq struct {
 	dto.Pagination `search:"-"`
-	PurchaseNumber string `form:"purchaseNumber"  search:"type:exact;column:purchase_number;table:tb_purchase_list" comment:"采购单号"`
+	PurchaseNumber string `form:"purchaseNumber"  search:"type:contains;column:purchase_number;table:tb_purchase_list" comment:"采购单号"`
 	State          string `form:"state"  search:"type:exact;column:state;table:tb_purchase_list" comment:"是否付款"`
 	StorageStatus  string `form:"storageStatus"  search:"type:exact;column:storage_status;table:tb_purchase_list" comment:"是否入库"`
 	PurchaseListOrder
@@ -36,16 +36,17 @@ func (m *PurchaseListGetPageReq) GetNeedSearch() interface{} {
 }
 
 type PurchaseListInsertReq struct {
-	Id             int                          `json:"-" comment:"主键编码"` // 主键编码
-	AmountPayable  float64                      `json:"amountPayable" comment:"应付金额"`
-	AmountPaid     float64                      `json:"amountPaid" comment:"已付金额"`
-	PurchaseDate   string                       `json:"purchaseDate" comment:"采购日期"`
-	PurchaseNumber string                       `json:"purchaseNumber" comment:"采购单号"`
-	Remarks        string                       `json:"remarks" comment:"备注"`
-	State          string                       `json:"state" comment:"是否付款"`
-	StorageStatus  string                       `json:"storageStatus" comment:"是否入库"`
-	SupplierId     int64                        `json:"supplierId" comment:"供货商"`
-	Goods          []PurchaseListGoodsInsertReq `json:"goods" comment:"商品列表"`
+	Id                      int                          `json:"-" comment:"主键编码"` // 主键编码
+	AmountPayable           float64                      `json:"amountPayable" comment:"应付金额"`
+	AmountPaid              float64                      `json:"amountPaid" comment:"已付金额"`
+	PurchaseDate            string                       `json:"purchaseDate" comment:"采购日期"`
+	PurchaseNumber          string                       `json:"purchaseNumber" comment:"采购单号"`
+	Remarks                 string                       `json:"remarks" comment:"备注"`
+	State                   string                       `json:"state" comment:"是否付款"`
+	StorageStatus           string                       `json:"storageStatus" comment:"是否入库"`
+	SupplierId              int64                        `json:"supplierId" comment:"供货商"`
+	Goods                   []PurchaseListGoodsInsertReq `json:"goods" comment:"商品列表"`
+	SelectedSaleNumberValue string                       `json:"selectedSaleNumberValue" comment:"销售订单号"`
 	common.ControlBy
 }
 
@@ -62,6 +63,7 @@ func (s *PurchaseListInsertReq) Generate(model *models.PurchaseList) {
 	model.StorageStatus = s.StorageStatus
 	model.SupplierId = s.SupplierId
 	model.CreateBy = s.CreateBy // 添加这而，需要记录是被谁创建的
+	model.SaleNumber = s.SelectedSaleNumberValue
 }
 
 func (s *PurchaseListInsertReq) GenerateGoods(purchaseListId int64) []models.PurchaseListGoods {
