@@ -105,6 +105,7 @@
                 listGoods(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
                         this.goodsList = response.data.list
                         this.goodsList.forEach(item => {
+                            // 库存总余额 = 当前库存量 * 商品均价
                             item.totalBalance = (item.stockQuantity * item.purchasingPrice).toFixed(2);
                         });
                         this.total = response.data.count

@@ -46,7 +46,7 @@
                     <el-row :gutter="10" class="mb8">
                         <el-col :span="1.5">
                             <el-button
-                                    v-permisaction="['jxc:goods:list']"
+                                    v-permisaction="['jxc:goods:query']"
                                     type="primary"
                                     icon="el-icon-plus"
                                     size="mini"
@@ -150,7 +150,7 @@
 
                         <!-- 商品详情对话框 -->
                         <el-dialog :title="goodsTitle" :visible.sync="goodsOpen" :modal-append-to-body="false" :append-to-body="true">
-                            <el-form ref="formGoods" :label-position="labelPosition" :model="formGoods" :rules="rules" label-width="100px">
+                            <el-form ref="formGoods" :label-position="labelPosition" :model="formGoods" :rules="goodsRules" label-width="100px">
                                 
                                 <el-form-item label="商品编码" prop="gCode">
                                     <el-input v-model="formGoods.gCode" placeholder="商品编码自动生成" :disabled="true"
@@ -217,7 +217,7 @@
 </template>
 
 <script>
-    import {addSaleList, delSaleList, getSaleList, listSaleList, updateSaleList} from '@/api/jxc/tb-sale-list'
+    import {addSaleList,  updateSaleList} from '@/api/jxc/tb-sale-list'
     import {getGoods, listGoods} from '@/api/jxc/tb-goods'
     import {listConsumer } from '@/api/jxc/tb-consumer'
     export default {
@@ -267,6 +267,12 @@
                     state:  [ {required: true, message: '状态不能为空', trigger: 'blur'} ],
                     customerId:  [ {required: true, message: '客户不能为空', trigger: 'change'} ],
                     saleDate:  [ {required: true, message: '销售日期不能为空', trigger: 'blur'} ],
+
+                },
+                goodsRules: {
+                    num: [
+                        { required: true, message: '数量为必填项', trigger: 'blur' }
+                    ]
                 },
                 //--------以下是嵌套表单参数
                 labelPosition: 'left',
@@ -360,37 +366,27 @@
             /** 提交按钮 */
             submitForm: function () {
                 this.$refs['form'].validate(valid => {
-                     this.form.customerId = parseInt(this.form.customerId, 10);
-                     const payload = {
-                        ...this.form,
-                        goods: this.tempItem // 将对象数组作为表单的一部分
-                    };
-
                     if (valid) {
-                        if (this.form.id !== undefined) {
-                            updateSaleList(this.form).then(response => {
-                                if (response.code === 200) {
-                                    this.msgSuccess(response.msg)
-                                    this.reset()
-                                    //this.open = false
-                                    //this.getList()
-                                } else {
-                                    this.msgError(response.msg)
-                                }
-                            })
-                        } else {
-
-                            addSaleList(payload).then(response => {
-                                if (response.code === 200) {
-                                    this.msgSuccess(response.msg)
-                                    this.reset()
-                                    //this.open = false
-                                    //this.getList()
-                                } else {
-                                    this.msgError(response.msg)
-                                }
-                            })
+                        // 校验 tempItem 数组是否为空
+                        if (this.tempItem.length === 0) {
+                            this.msgError('商品列表不能为空，请添加商品明细');
+                            return;
                         }
+                        this.form.customerId = parseInt(this.form.customerId, 10);
+                        const payload = {
+                            ...this.form,
+                            goods: this.tempItem // 将对象数组作为表单的一部分
+                        };
+                        addSaleList(payload).then(response => {
+                            if (response.code === 200) {
+                                this.msgSuccess(response.msg)
+                                this.reset()
+                                //this.open = false
+                                //this.getList()
+                            } else {
+                                this.msgError(response.msg)
+                            }
+                        })
                     }
                 })
             },

@@ -176,34 +176,22 @@
                         this.form.transactionType = "1"
                         const selectedOrder = this.saleNumberOptions.find(option => option.key === this.form.orderNumber);
                         const payload = {
-                        ...this.form,
-                        orderId: selectedOrder ? Number(selectedOrder.key) : 0, // 订单 ID 转换为整数
-                        orderNumber: selectedOrder ? selectedOrder.value : '', // 使用订单单号
-                        goods: this.saleListGoodsList // 将商品数组作为表单的一部分
-                    };
-                        if (this.form.id !== undefined) {
-                            updateInventoryTransactions(this.form).then(response => {
-                                if (response.code === 200) {
-                                    this.msgSuccess(response.msg)
-                                    this.reset()
-                                } else {
-                                    this.msgError(response.msg)
-                                }
-                            })
-                        } else {
-                            addInventoryTransactions(payload).then(response => {
-                                if (response.code === 200) {
-                                    this.msgSuccess(response.msg)
-                                    this.reset()
-                                } else {
-                                    this.msgError(response.msg)
-                                }
-                            })
-                        }
+                            ...this.form,
+                            orderId: selectedOrder ? Number(selectedOrder.key) : 0, // 订单 ID 转换为整数
+                            orderNumber: selectedOrder ? selectedOrder.value : '', // 使用订单单号
+                            goods: this.saleListGoodsList // 将商品数组作为表单的一部分
+                        };
+                        addInventoryTransactions(payload).then(response => {
+                            if (response.code === 200) {
+                                this.msgSuccess(response.msg)
+                                this.reset()
+                            } else {
+                                this.msgError(response.msg)
+                            }
+                        })
                     }
                 })
             }
-           
         }
     }
 </script>

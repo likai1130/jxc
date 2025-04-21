@@ -118,8 +118,8 @@
 </template>
 
 <script>
-    import {addPurchaseList, getPurchaseList, listPurchaseList, updatePurchaseList} from '@/api/jxc/tb-purchase-list'
-    import { getSaleList, listSaleList} from '@/api/jxc/tb-sale-list'
+    import {addPurchaseList} from '@/api/jxc/tb-purchase-list'
+    import {listSaleList} from '@/api/jxc/tb-sale-list'
     import {listSaleListGoods} from '@/api/jxc/tb-sale-list-goods'
     import {listSupplier } from '@/api/jxc/tb-supplier'
     import {getGoods, listGoods} from '@/api/jxc/tb-goods'
@@ -334,35 +334,29 @@
             /** 提交按钮 */
             submitForm: function () {
                 this.$refs['form'].validate(valid => {
-                    this.saleListGoodsList.forEach(item => {
-                        item.supplierId = Number(item.supplierId); // 转换为数字
-                    });
-                    const payload = {
-                        ...this.form,
-                        goods: this.saleListGoodsList // 将对象数组作为表单的一部分
-                    };
-                    payload.selectedSaleNumberValue =  this.selectedSaleNumberValue
-
                     if (valid) {
-                        if (this.form.id !== undefined) {
-                            updatePurchaseList(this.form).then(response => {
-                                if (response.code === 200) {
-                                    this.msgSuccess(response.msg)
-                                    this.reset()
-                                } else {
-                                    this.msgError(response.msg)
-                                }
-                            })
-                        } else {
-                            addPurchaseList(payload).then(response => {
-                                if (response.code === 200) {
-                                    this.msgSuccess(response.msg)
-                                    this.reset()
-                                } else {
-                                    this.msgError(response.msg)
-                                }
-                            })
+                        // 校验 tempItem 数组是否为空
+                        if (this.saleListGoodsList.length === 0) {
+                            this.msgError('商品列表不能为空，请添加商品明细');
+                            return;
                         }
+
+                        this.saleListGoodsList.forEach(item => {
+                            item.supplierId = Number(item.supplierId); // 转换为数字
+                        });
+                        const payload = {
+                            ...this.form,
+                            goods: this.saleListGoodsList // 将对象数组作为表单的一部分
+                        };
+                        payload.selectedSaleNumberValue =  this.selectedSaleNumberValue
+                        addPurchaseList(payload).then(response => {
+                            if (response.code === 200) {
+                                this.msgSuccess(response.msg)
+                                this.reset()
+                            } else {
+                                this.msgError(response.msg)
+                            }
+                        })
                     }
                 })
             }
